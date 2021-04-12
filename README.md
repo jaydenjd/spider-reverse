@@ -1,2 +1,7 @@
-# crawler-reverse
-爬虫逆向
+## spider-reverse
+爬虫 && 逆向
+
+### 目前包含的爬虫与逆向有：
+
+- 猿人学
+- 微博
