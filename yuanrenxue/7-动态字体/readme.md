@@ -2,7 +2,7 @@
 
 正常流程走，打开开发者选项。发现接口返回的数据都是乱码的，这种其实就是字体加密了。
 
-![ajax](https://img-1257127044.cos.ap-guangzhou.myqcloud.com/reverse/font/yrx-ajax.png)
+![yrx-ajax](https://img-1257127044.cos.ap-guangzhou.myqcloud.com/reverse/font/yrx-ajax.png)
 
 在 Elements 这边就直接可以看得出来字体是加密了
 
