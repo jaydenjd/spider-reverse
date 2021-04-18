@@ -72,7 +72,7 @@ def save_woff(font_str, file='tmp'):
     return font_mapping
 
 
-def make_request(page=1):
+def make_request(page=5):
     url = f'http://match.yuanrenxue.com/api/match/7?page={page}'
     headers = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -83,7 +83,7 @@ def make_request(page=1):
         'Host': 'match.yuanrenxue.com',
         'Pragma': 'no-cache',
         'Referer': 'http://match.yuanrenxue.com/match/7',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+        'User-Agent': 'yuanrenxue.project',
         'X-Requested-With': 'XMLHttpRequest',
     }
     res = requests.get(url=url, headers=headers)
