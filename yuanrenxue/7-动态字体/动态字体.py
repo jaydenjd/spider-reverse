@@ -8,7 +8,7 @@ import base64
 import requests
 from fontTools.ttLib import TTFont
 import re
-
+import os
 cipher_map = {
     '10100100100101010010010010': 0,
     '1001101111': 1,
@@ -23,7 +23,7 @@ cipher_map = {
 }
 
 
-def save_woff(font_str, file='test'):
+def save_woff(font_str, file='tmp'):
     b = base64.b64decode(font_str)
     with open(file + '.ttf', 'wb') as f:
         f.write(b)
@@ -31,12 +31,18 @@ def save_woff(font_str, file='test'):
     _font = TTFont(file + '.ttf')
     _font.saveXML(f'{file}.xml')
     font_mapping = {}
-    for key, value in _font['glyf'].glyphs.items():
+    glyphs = _font['glyf'].glyphs
+    for key, value in glyphs.items():
         y = ''.join([str(i) for i in list(value.flags)])
         _str = re.findall(r'\d+', key)
         if not _str:
             continue
         font_mapping[_str[0]] = cipher_map[y]
+    # 删除临时文件
+    if os.path.exists(file + '.ttf'):
+        os.remove(file + '.ttf')
+    if os.path.exists(file + '.xml'):
+        os.remove(file + '.xml')
     return font_mapping
 
 
@@ -64,23 +70,6 @@ def make_request(page=1):
             num += str(font_mapping[key])
         cipher_nums.append(num)
     print(cipher_nums)
-
-
-def gen_num_map(font_obj):
-    # 注意，这个顺序是与在线字体库上的看到的顺序是一致的，而每次这个顺序都是变化的，以看到的顺序为准
-    nums = [6, 7, 1, 8, 0, 3, 9, 4, 5, 2]
-    on_maps = []
-    # 直接解析出的 font_obj['glyf'].glyphs，里面每个 key 是与 nums 的顺序关系是一致的，所以可以映射起来
-    for key, value in font_obj['glyf'].glyphs.items():
-        # 有一个开头的 .notdef，我们过滤掉即可
-        _str = re.findall(r'\d+', key)
-        if not _str:
-            continue
-        y = ''.join([str(i) for i in list(value.flags)])
-        on_maps.append(y)
-    res = zip(on_maps, nums)
-    res = dict(sorted(res, key=lambda x: x[1]))
-    print(res)
 
 
 if __name__ == '__main__':

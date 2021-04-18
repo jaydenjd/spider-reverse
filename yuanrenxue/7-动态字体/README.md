@@ -176,7 +176,7 @@ import base64
 import requests
 from fontTools.ttLib import TTFont
 import re
-
+import os
 cipher_map = {
     '10100100100101010010010010': 0,
     '1001101111': 1,
@@ -191,7 +191,7 @@ cipher_map = {
 }
 
 
-def save_woff(font_str, file='test'):
+def save_woff(font_str, file='tmp'):
     b = base64.b64decode(font_str)
     with open(file + '.ttf', 'wb') as f:
         f.write(b)
@@ -199,12 +199,18 @@ def save_woff(font_str, file='test'):
     _font = TTFont(file + '.ttf')
     _font.saveXML(f'{file}.xml')
     font_mapping = {}
-    for key, value in _font['glyf'].glyphs.items():
+    glyphs = _font['glyf'].glyphs
+    for key, value in glyphs.items():
         y = ''.join([str(i) for i in list(value.flags)])
         _str = re.findall(r'\d+', key)
         if not _str:
             continue
         font_mapping[_str[0]] = cipher_map[y]
+    # 删除临时文件
+    if os.path.exists(file + '.ttf'):
+        os.remove(file + '.ttf')
+    if os.path.exists(file + '.xml'):
+        os.remove(file + '.xml')
     return font_mapping
 
 
@@ -232,8 +238,10 @@ def make_request(page=1):
             num += str(font_mapping[key])
         cipher_nums.append(num)
     print(cipher_nums)
-    
+
+
 if __name__ == '__main__':
     make_request()
+
 ```
 
