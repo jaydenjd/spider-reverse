@@ -17,6 +17,10 @@ def get_js_str(file):
 
 
 def get_value(func, file, *args):
-    ctx = execjs.compile(get_js_str(f"{path}/yuanrenxue/js_code/{file}.js"))
+    ctx = execjs.compile(get_js_str(f"{file}"))
     value = ctx.call(func, *args)
     return value
+
+
+def get_path(file):
+    return os.path.dirname(os.path.abspath(file))

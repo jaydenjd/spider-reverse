@@ -10,6 +10,7 @@ https://www.bilibili.com/video/BV1yz4y1o7Ex?p=2
 """
 import requests
 from yuanrenxue import get_value
+from yuanrenxue import get_path
 import time
 from loguru import logger
 
@@ -27,7 +28,8 @@ def make_request(page=1):
         'User-Agent': 'yuanrenxue.project',
         'X-Requested-With': 'XMLHttpRequest',
     }
-    m_cookie = get_value('m_cookie', '1-cookies', int(time.time()) * 1000)
+    path = get_path(__file__)
+    m_cookie = get_value('m_cookie', f'{path}/2-cookies.js', int(time.time()) * 1000)
     logger.info(m_cookie)
     cookies = m_cookie
     headers['cookie'] = cookies
