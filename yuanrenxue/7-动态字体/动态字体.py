@@ -2,6 +2,9 @@
 # @Time   : 2021/4/11 下午9:11
 # @Author : wu
 """
+题目链接：http://match.yuanrenxue.com/match/7
+
+相关库：
 pip install fonttools
 """
 import base64
